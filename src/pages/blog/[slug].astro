@@ -1,57 +1,41 @@
 ---
-import { getCollection, render } from 'astro:content'
-import readingTime from 'reading-time'
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Bio from '../../components/Bio.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('posts')
-  return posts.map(p => ({
-    params: { slug: p.data.slug },
-    props: { post: p },
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
   }));
 }
 
-const { post } = Astro.props
-const { title, slug, description, publishDate } = post.data;
-const readingTimeEstimate = readingTime(post.body).text
-const permalink = `${Astro.site.href}blog/${slug}`;
-const { Content } = await render(post)
+const post = Astro.props;
+const { Content } = await post.render();
 ---
 
-<BaseLayout title={title} description={description} permalink={permalink} current="blog">
-  <header>
-    <p>{publishDate} ~ {readingTimeEstimate}</p>
-    <h1>{title}</h1>
-    <hr />
-  </header>
-  <div class="container">
-    <article class="content">
-      <Content />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{post.data.title} | ScoreView.online</title>
+    <style>
+      body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; padding: 2rem 1rem; }
+      article { max-width: 800px; margin: 0 auto; background: #1e293b; padding: 2rem; border-radius: 12px; border: 1px solid #334155; }
+      a { color: #38bdf8; }
+      h1 { color: #fff; margin-top: 0.5rem; }
+      .meta { font-size: 0.85rem; color: #94a3b8; margin-bottom: 2rem; border-bottom: 1px solid #334155; padding-bottom: 1rem; }
+    </style>
+  </head>
+  <body>
+    <article>
+      <a href="/">← Back to ScoreView</a>
+      <h1>{post.data.title}</h1>
+      <div class="meta">
+        Published on {post.data.pubDate.toLocaleDateString()} | Category: {post.data.category}
+      </div>
+      <div>
+        <Content />
+      </div>
     </article>
-    <hr />
-    <Bio />
-  </div>
-</BaseLayout>
-
-<style>
-  header {
-    text-align: center;
-  }
-
-  header h1 {
-    margin-bottom: 0.7em;
-  }
-
-  header p {
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    font-family: var(--font-family-sans);
-    font-weight: 600;
-  }
-
-  header hr {
-    min-width: 100px;
-    width: 30%;
-  }
-</style>
+  </body>
+</html>
