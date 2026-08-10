@@ -1,0 +1,225 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const creditPosts = allPosts.filter(post => 
+  post.data.category?.toLowerCase().includes('credit')
+).slice(0, 6);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Credit Score & $1 Trial Report Guide | ScoreView.online</title>
+    <meta name="description" content="Access 3-bureau credit reports with a $1 trial. Track payment history, credit utilization, and credit score monitoring alerts." />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --accent-green: #16a34a;
+        --bg-main: #f8fafc;
+        --bg-card: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { 
+        width: 100%;
+        overflow-x: hidden;
+        background-color: var(--bg-main); 
+        color: var(--text-dark); 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+        line-height: 1.6;
+      }
+
+      /* Header */
+      header { 
+        background: var(--bg-card); 
+        border-bottom: 1px solid var(--border-color); 
+        position: sticky; top: 0; z-index: 50;
+      }
+      .nav-container {
+        max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem;
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); text-decoration: none; }
+      .logo span { color: var(--primary); }
+      .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+      .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+      /* Hero Offer Section */
+      .hero-offer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #fff; padding: 4rem 1.5rem; text-align: center;
+      }
+      .hero-offer h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.2; }
+      .hero-offer p { color: #94a3b8; font-size: 1.1rem; max-width: 700px; margin: 0 auto 1.5rem; }
+      
+      .affiliate-btn {
+        background: var(--accent-green);
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 1rem 2.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
+        transition: transform 0.2s, background 0.2s;
+      }
+      .affiliate-btn:hover {
+        background: #15803d;
+        transform: translateY(-2px);
+      }
+
+      /* Container & Features */
+      .container { max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem; }
+      
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 4rem;
+      }
+      .feature-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.8rem;
+        text-align: left;
+      }
+      .feature-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-dark); }
+      .feature-card p { font-size: 0.95rem; color: var(--text-muted); }
+
+      /* Blog Section */
+      .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; }
+      .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+      .post-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column;
+        justify-content: space-between;
+      }
+      .post-title { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); text-decoration: none; margin: 0.5rem 0; display: block; }
+      .post-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+
+      /* Disclaimer */
+      .disclaimer {
+        background: #f1f5f9;
+        border-left: 4px solid var(--primary);
+        padding: 1rem 1.2rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4rem;
+        border-radius: 4px;
+      }
+
+      /* Footer */
+      footer { background: #0f172a; color: #94a3b8; padding: 3rem 1.5rem 1.5rem; margin-top: 4rem; }
+      .footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+      .footer-links a { color: #94a3b8; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; }
+      .footer-bottom { text-align: center; border-top: 1px solid #1e293b; padding-top: 1.5rem; margin-top: 2rem; font-size: 0.85rem; }
+
+      @media (max-width: 768px) {
+        .hero-offer h1 { font-size: 1.8rem; }
+        .hero-offer p { font-size: 0.95rem; }
+        .affiliate-btn { width: 100%; text-align: center; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Top Nav -->
+    <header>
+      <div class="nav-container">
+        <a href="/" class="logo">ScoreView<span>.online</span></a>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="/credit" class="active">Credit Check</a>
+          <a href="/background">Background Check</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Affiliate Hero Banner with $1 Trial Callout -->
+    <section class="hero-offer">
+      <div style="display: inline-block; background: #22c55e; color: #fff; font-size: 0.85rem; font-weight: 800; padding: 0.3rem 0.8rem; border-radius: 20px; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.5px;">
+        🔥 Limited Time $1 Trial
+      </div>
+      <h1>Check Your Credit Score & 3-Bureau Report</h1>
+      <p>Get instant access to your credit scores, monitoring alerts, and credit-building tools for <strong>just $1</strong>.</p>
+      
+      <div style="margin-bottom: 1rem;">
+        <!-- APNA CREDIT AFFILIATE LINK YAHAN LAGAYEIN -->
+        <a href="YOUR_AFFILIATE_LINK_HERE" target="_blank" rel="nofollow sponsored" class="affiliate-btn">
+          Claim Your $1 Credit Score Trial →
+        </a>
+      </div>
+      <p style="font-size: 0.85rem; color: #94a3b8;">
+        🔒 7-Day Trial for $1 • Renews at ~$29.99/mo • Cancel anytime online
+      </p>
+    </section>
+
+    <div class="container">
+      
+      <!-- Features / Benefits Grid -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>📊 Real-Time Score Updates</h3>
+          <p>Track changes to your credit score with monthly or weekly updates from Equifax, Experian, and TransUnion.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🛡️ Identity & Fraud Alerts</h3>
+          <p>Receive notifications when new accounts or unexpected inquiries are added under your personal details.</p>
+        </div>
+        <div class="feature-card">
+          <h3>💡 Score Factors Analysis</h3>
+          <p>Understand how payment history, credit utilization, and account age affect your overall score ratings.</p>
+        </div>
+      </div>
+
+      <!-- Credit Articles Section -->
+      <h2 class="section-title">Credit Building & Repair Guides</h2>
+      <div class="posts-grid">
+        {creditPosts.length > 0 ? (
+          creditPosts.map((post) => (
+            <article class="post-card">
+              <div>
+                <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
+                <p class="post-desc">{post.data.description}</p>
+              </div>
+            </article>
+          ))
+        ) : (
+          <p style="color: var(--text-muted);">No credit specific articles published yet. Check back soon!</p>
+        )}
+      </div>
+
+      <!-- Affiliate Disclaimer -->
+      <div class="disclaimer">
+        <strong>Disclosure:</strong> ScoreView.online is an independent, advertising-supported service. We may receive compensation from companies whose products or services we recommend through affiliate links. Trial terms: $1 for 7 days, renewing at ~$29.99/mo unless cancelled.
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-container">
+        <a href="/" class="logo" style="color:#fff;">ScoreView<span style="color:#38bdf8;">.online</span></a>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/credit">Credit Check</a>
+          <a href="/background">Background Check</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; {new Date().getFullYear()} ScoreView.online. All Rights Reserved.
+      </div>
+    </footer>
+
+  </body>
+</html>

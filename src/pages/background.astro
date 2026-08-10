@@ -1,0 +1,227 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const backgroundPosts = allPosts.filter(post => {
+  const category = post.data.category?.toLowerCase() || '';
+  return category.includes('background') || category.includes('public') || category.includes('records');
+}).slice(0, 6);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Public Records & Background Search Guide | ScoreView.online</title>
+    <meta name="description" content="Access guides on public records searches, criminal history checks, address history, and online identity lookup tools." />
+    <style>
+      :root {
+        --primary: #0284c7;
+        --primary-dark: #0369a1;
+        --accent-blue: #2563eb;
+        --bg-main: #f8fafc;
+        --bg-card: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { 
+        width: 100%;
+        overflow-x: hidden;
+        background-color: var(--bg-main); 
+        color: var(--text-dark); 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+        line-height: 1.6;
+      }
+
+      /* Header */
+      header { 
+        background: var(--bg-card); 
+        border-bottom: 1px solid var(--border-color); 
+        position: sticky; top: 0; z-index: 50;
+      }
+      .nav-container {
+        max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem;
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); text-decoration: none; }
+      .logo span { color: var(--accent-blue); }
+      .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+      .nav-links a:hover, .nav-links a.active { color: var(--accent-blue); }
+
+      /* Hero Offer Section */
+      .hero-offer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #fff; padding: 4rem 1.5rem; text-align: center;
+      }
+      .hero-offer h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.2; }
+      .hero-offer p { color: #94a3b8; font-size: 1.1rem; max-width: 700px; margin: 0 auto 1.5rem; }
+      
+      .affiliate-btn {
+        background: var(--primary);
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        padding: 1rem 2.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+        transition: transform 0.2s, background 0.2s;
+      }
+      .affiliate-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      /* Container & Features */
+      .container { max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem; }
+      
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 4rem;
+      }
+      .feature-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.8rem;
+        text-align: left;
+      }
+      .feature-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-dark); }
+      .feature-card p { font-size: 0.95rem; color: var(--text-muted); }
+
+      /* Blog Section */
+      .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 1.5rem; }
+      .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+      .post-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column;
+        justify-content: space-between;
+      }
+      .post-title { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); text-decoration: none; margin: 0.5rem 0; display: block; }
+      .post-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+
+      /* Disclaimer */
+      .disclaimer {
+        background: #f1f5f9;
+        border-left: 4px solid var(--accent-blue);
+        padding: 1rem 1.2rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4rem;
+        border-radius: 4px;
+        line-height: 1.5;
+      }
+
+      /* Footer */
+      footer { background: #0f172a; color: #94a3b8; padding: 3rem 1.5rem 1.5rem; margin-top: 4rem; }
+      .footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+      .footer-links a { color: #94a3b8; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; }
+      .footer-bottom { text-align: center; border-top: 1px solid #1e293b; padding-top: 1.5rem; margin-top: 2rem; font-size: 0.85rem; }
+
+      @media (max-width: 768px) {
+        .hero-offer h1 { font-size: 1.8rem; }
+        .hero-offer p { font-size: 0.95rem; }
+        .affiliate-btn { width: 100%; text-align: center; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Top Nav -->
+    <header>
+      <div class="nav-container">
+        <a href="/" class="logo">ScoreView<span>.online</span></a>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="/credit">Credit Check</a>
+          <a href="/background" class="active">Background Check</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Affiliate Hero Banner with Transparent Pricing Options -->
+    <section class="hero-offer">
+      <div style="display: inline-block; background: #0284c7; color: #fff; font-size: 0.85rem; font-weight: 800; padding: 0.3rem 0.8rem; border-radius: 20px; text-transform: uppercase; margin-bottom: 1rem; letter-spacing: 0.5px;">
+        🔍 Official Public Records Search
+      </div>
+      <h1>Online Public Records & Background Lookup</h1>
+      <p>Search public databases, court filings, criminal history, and address lookup tools. Comprehensive plans available starting from <strong>$19/mo to $28/mo</strong>.</p>
+      
+      <div style="margin-bottom: 1rem;">
+        <!-- APNA MAIN BACKGROUND AFFILIATE LINK YAHAN LAGAYEIN (TruthFinder / PeopleFinders / Whitepages) -->
+        <a href="YOUR_BACKGROUND_AFFILIATE_LINK_HERE" target="_blank" rel="nofollow sponsored" class="affiliate-btn">
+          Start Background Search Now →
+        </a>
+      </div>
+      <p style="font-size: 0.85rem; color: #94a3b8;">
+        ⚡ Instant Digital Search • TruthFinder (~$28/mo) • PeopleFinders (~$19/mo) • Whitepages (~$40/mo)
+      </p>
+    </section>
+
+    <div class="container">
+      
+      <!-- Features / Benefits Grid -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>📜 Public Records Indexing</h3>
+          <p>Access official public domain information including court filings, property history, and municipal records.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔍 Contact & Location History</h3>
+          <p>Trace historical physical addresses, landline/mobile records, and public relative connection maps.</p>
+        </div>
+        <div class="feature-card">
+          <h3>🛡️ Digital Footprint Check</h3>
+          <p>Learn how to monitor your own public footprint and protect your identity online from data aggregators.</p>
+        </div>
+      </div>
+
+      <!-- Related Articles Section -->
+      <h2 class="section-title">Background Search Guides & Public Info</h2>
+      <div class="posts-grid">
+        {backgroundPosts.length > 0 ? (
+          backgroundPosts.map((post) => (
+            <article class="post-card">
+              <div>
+                <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
+                <p class="post-desc">{post.data.description}</p>
+              </div>
+            </article>
+          ))
+        ) : (
+          <p style="color: var(--text-muted);">No background check guides published yet. Check back soon!</p>
+        )}
+      </div>
+
+      <!-- FCRA & Affiliate Disclaimer -->
+      <div class="disclaimer">
+        <strong>Important Notice:</strong> ScoreView.online is an educational media site and is not a Consumer Reporting Agency (CRA) under the FCRA. Linked services must not be used for tenant screening, employment decisions, or FCRA-regulated checks. Plans range from $19 to $40/mo based on provider.
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-container">
+        <a href="/" class="logo" style="color:#fff;">ScoreView<span style="color:#38bdf8;">.online</span></a>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/credit">Credit Check</a>
+          <a href="/background">Background Check</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; {new Date().getFullYear()} ScoreView.online. All Rights Reserved.
+      </div>
+    </footer>
+
+  </body>
+</html>
