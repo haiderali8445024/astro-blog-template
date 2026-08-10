@@ -1,177 +1,309 @@
----
-import { getCollection } from 'astro:content';
-
-const posts = await getCollection('blog');
-const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredPost = sortedPosts[0];
-const recentPosts = sortedPosts.slice(1);
----
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ScoreView.online | Latest Insights & Guides</title>
-    <style>
-      :root {
-        --primary: #2563eb;
-        --primary-dark: #1d4ed8;
-        --bg-main: #ffffff;
-        --bg-card: #ffffff;
-        --text-dark: #0f172a;
-        --text-muted: #64748b;
-        --border-color: #e2e8f0;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Affiliate Network Admin Dashboard</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --border-color: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #0284c7;
+      --accent-green: #16a34a;
+      --accent-amber: #f59e0b;
+    }
 
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      html, body { 
-        width: 100%;
-        overflow-x: hidden;
-        background-color: var(--bg-main); 
-        color: var(--text-dark); 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-        line-height: 1.6;
-      }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
 
-      /* Clean Top Navigation */
-      header { 
-        background: var(--bg-card); 
-        border-bottom: 1px solid var(--border-color); 
-        position: sticky; top: 0; z-index: 50;
-        width: 100%;
-      }
-      .nav-container {
-        max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem;
-        display: flex; justify-content: space-between; align-items: center;
-      }
-      .logo { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); text-decoration: none; }
-      .logo span { color: var(--primary); }
-      
-      .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-      .nav-links a:hover { color: var(--primary); }
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+    }
 
-      /* Dark Hero Banner */
-      .hero-banner {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        color: #fff; padding: 3.5rem 1.5rem; text-align: center; width: 100%;
-      }
-      .hero-banner h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.2; }
-      .hero-banner p { color: #94a3b8; font-size: 1.1rem; max-width: 650px; margin: 0 auto; }
+    /* Sidebar Layout */
+    .sidebar {
+      width: 260px;
+      background-color: #090d16;
+      border-right: 1px solid var(--border-color);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
 
-      /* Main Content Layout */
-      .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; width: 100%; }
-      
-      /* Featured Card */
-      .featured-card {
-        background: #f8fafc; border: 1px solid var(--border-color);
-        border-radius: 12px; padding: 2rem; margin-bottom: 2.5rem;
-      }
-      .featured-badge { 
-        background: #dbeafe; color: var(--primary); font-size: 0.75rem; 
-        font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase;
-      }
-      .featured-title { font-size: 1.75rem; font-weight: 800; color: var(--text-dark); text-decoration: none; margin: 0.8rem 0; display: block; line-height: 1.3; }
-      .featured-title:hover { color: var(--primary); }
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-      /* Standard Posts Grid */
-      .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem; }
-      
-      .post-card {
-        background: #ffffff; border: 1px solid var(--border-color);
-        border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column;
-        justify-content: space-between; transition: border-color 0.2s, box-shadow 0.2s;
-      }
-      .post-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-      .post-title { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); text-decoration: none; margin: 0.6rem 0; display: block; }
-      .post-title:hover { color: var(--primary); }
-      .post-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
-      .post-meta { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+    .menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-      @media (max-width: 768px) {
-        .hero-banner h1 { font-size: 1.8rem; }
-        .hero-banner p { font-size: 0.95rem; }
-        .featured-title { font-size: 1.3rem; }
-        .featured-card { padding: 1.25rem; }
-        .posts-grid { grid-template-columns: 1fr; }
-      }
+    .menu-item {
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
 
-      /* Simple Clean Footer */
-      footer { background: #0f172a; color: #94a3b8; padding: 3rem 1.5rem 1.5rem; margin-top: 4rem; width: 100%; }
-      .footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
-      .footer-links a { color: #94a3b8; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; }
-      .footer-links a:hover { color: #fff; }
-      .footer-bottom { text-align: center; border-top: 1px solid #1e293b; padding-top: 1.5rem; margin-top: 2rem; font-size: 0.85rem; }
-    </style>
-  </head>
-  <body>
+    .menu-item:hover, .menu-item.active {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border-left: 4px solid var(--accent-blue);
+    }
 
-    <!-- Simple Top Nav -->
-    <header>
-      <div class="nav-container">
-        <a href="/" class="logo">ScoreView<span>.online</span></a>
-        <nav class="nav-links">
-          <a href="/">Home</a>
-          <a href="/blog">Articles</a>
-        </nav>
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .time-badge {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--accent-green);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .stat-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .stat-change {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .stat-change.up { color: var(--accent-green); }
+    .stat-change.down { color: #ef4444; }
+
+    /* Data Table Section */
+    .table-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--text-muted);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-pill {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-pill.active {
+      background: rgba(22, 163, 74, 0.2);
+      color: var(--accent-green);
+    }
+
+    .status-pill.pending {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-amber);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">⚡ TrackEngine Engine</div>
+    <ul class="menu">
+      <li class="menu-item active">Dashboard</li>
+      <li class="menu-item">Offers Manager (20+)</li>
+      <li class="menu-item">Affiliates / Publishers</li>
+      <li class="menu-item">Real-Time Conversions</li>
+      <li class="menu-item">Postback & APIs</li>
+      <li class="menu-item">Network Settings</li>
+    </ul>
+  </aside>
+
+  <!-- Main View -->
+  <main class="main-content">
+    <div class="header">
+      <div>
+        <h1>Performance Dashboard</h1>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Live tracking metrics & conversions</p>
       </div>
-    </header>
-
-    <!-- Hero Banner -->
-    <section class="hero-banner">
-      <h1>Smart Financial & Background Verification</h1>
-      <p>Access credit scoring insights, public records databases, and consumer finance guides.</p>
-    </section>
-
-    <!-- Main Content -->
-    <div class="container">
-      <main>
-        {featuredPost && (
-          <div class="featured-card">
-            <span class="featured-badge">Latest Post</span>
-            <a href={`/blog/${featuredPost.slug}`} class="featured-title">{featuredPost.data.title}</a>
-            <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1rem;">{featuredPost.description || featuredPost.data.description}</p>
-            <div class="post-meta">
-              Published on {featuredPost.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-            </div>
-          </div>
-        )}
-
-        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: #0f172a;">Recent Articles</h2>
-
-        <div class="posts-grid">
-          {recentPosts.map((post) => (
-            <article class="post-card">
-              <div>
-                <span class="featured-badge" style="background:#f1f5f9; color:#475569;">{post.data.category || 'Guide'}</span>
-                <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
-                <p class="post-desc">{post.data.description}</p>
-              </div>
-              <div class="post-meta">
-                {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              </div>
-            </article>
-          ))}
-        </div>
-      </main>
+      <div class="time-badge" id="liveClock">● Live Engine Running</div>
     </div>
 
-    <!-- Clean Footer -->
-    <footer>
-      <div class="footer-container">
-        <div>
-          <a href="/" class="logo" style="color:#fff;">ScoreView<span style="color:#38bdf8;">.online</span></a>
-        </div>
-        <div class="footer-links">
-          <a href="/">Home</a>
-          <a href="/blog">All Articles</a>
-        </div>
+    <!-- Analytics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total Clicks</div>
+        <div class="stat-value" id="totalClicks">124,590</div>
+        <div class="stat-change up">+14.2% today</div>
       </div>
-      <div class="footer-bottom">
-        &copy; {new Date().getFullYear()} ScoreView.online. All Rights Reserved.
-      </div>
-    </footer>
 
-  </body>
+      <div class="stat-card">
+        <div class="stat-title">Total Conversions</div>
+        <div class="stat-value" id="totalConversions">3,840</div>
+        <div class="stat-change up">+8.1% today</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-title">Revenue</div>
+        <div class="stat-value" id="totalRevenue">$18,420.50</div>
+        <div class="stat-change up">CR: 3.08%</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-title">Publisher Payout</div>
+        <div class="stat-value" id="totalPayout">$11,200.00</div>
+        <div class="stat-change down">Margin: 39.1%</div>
+      </div>
+    </div>
+
+    <!-- Active Offers Data -->
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Top Performing Offers</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Offer ID</th>
+            <th>Offer Name</th>
+            <th>Payout Type</th>
+            <th>Clicks</th>
+            <th>Conversions</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="offersBody">
+          <tr>
+            <td>#OFF-9021</td>
+            <td>E-Commerce Smart Watch Campaign</td>
+            <td>CPA ($24.00)</td>
+            <td>14,230</td>
+            <td>512</td>
+            <td><span class="status-pill active">Active</span></td>
+          </tr>
+          <tr>
+            <td>#OFF-8812</td>
+            <td>VPN Mobile App Installation</td>
+            <td>CPI ($3.50)</td>
+            <td>45,100</td>
+            <td>1,290</td>
+            <td><span class="status-pill active">Active</span></td>
+          </tr>
+          <tr>
+            <td>#OFF-7611</td>
+            <td>Financial Lead Generation Form</td>
+            <td>CPL ($12.00)</td>
+            <td>8,920</td>
+            <td>190</td>
+            <td><span class="status-pill pending">Capped</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    // Pure Dynamic JS (No heavy framework dependencies)
+    function updateLiveStats() {
+      const clickEl = document.getElementById('totalClicks');
+      let currentClicks = parseInt(clickEl.innerText.replace(',', ''));
+      
+      // Simulate live incoming traffic
+      setInterval(() => {
+        currentClicks += Math.floor(Math.random() * 5) + 1;
+        clickEl.innerText = currentClicks.toLocaleString();
+      }, 3000);
+    }
+
+    updateLiveStats();
+  </script>
+</body>
 </html>
