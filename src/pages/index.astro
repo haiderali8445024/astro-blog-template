@@ -11,13 +11,13 @@ const recentPosts = sortedPosts.slice(1);
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>ScoreView.online | Credit & Background Verification Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScoreView.online | Latest Insights & Guides</title>
     <style>
       :root {
         --primary: #2563eb;
         --primary-dark: #1d4ed8;
-        --bg-main: #f8fafc;
+        --bg-main: #ffffff;
         --bg-card: #ffffff;
         --text-dark: #0f172a;
         --text-muted: #64748b;
@@ -34,7 +34,7 @@ const recentPosts = sortedPosts.slice(1);
         line-height: 1.6;
       }
 
-      /* Header & Mobile Nav */
+      /* Clean Top Navigation */
       header { 
         background: var(--bg-card); 
         border-bottom: 1px solid var(--border-color); 
@@ -42,217 +42,130 @@ const recentPosts = sortedPosts.slice(1);
         width: 100%;
       }
       .nav-container {
-        max-width: 1200px; margin: 0 auto; padding: 1rem 1rem;
+        max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem;
         display: flex; justify-content: space-between; align-items: center;
-        flex-wrap: wrap; gap: 0.5rem;
       }
-      .logo { font-size: 1.4rem; font-weight: 800; color: var(--text-dark); text-decoration: none; }
+      .logo { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); text-decoration: none; }
       .logo span { color: var(--primary); }
       
-      .nav-links { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.85rem; }
+      .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
       .nav-links a:hover { color: var(--primary); }
-      
-      .btn-primary { 
-        background: var(--primary); color: #fff; padding: 0.4rem 0.9rem; 
-        border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.85rem;
-        display: inline-block; text-align: center;
-      }
 
-      /* Responsive Hero Banner */
+      /* Dark Hero Banner */
       .hero-banner {
         background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        color: #fff; padding: 2.5rem 1rem; text-align: center; width: 100%;
+        color: #fff; padding: 3.5rem 1.5rem; text-align: center; width: 100%;
       }
-      .hero-banner h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.6rem; line-height: 1.2; }
-      .hero-banner p { color: #94a3b8; font-size: 0.95rem; max-width: 650px; margin: 0 auto; }
+      .hero-banner h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.2; }
+      .hero-banner p { color: #94a3b8; font-size: 1.1rem; max-width: 650px; margin: 0 auto; }
 
-      /* Responsive Main Layout */
-      .container { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; width: 100%; }
-      .content-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-
-      /* Scrollable Category Pills on Mobile */
-      .category-pills { 
-        display: flex; gap: 0.6rem; margin-bottom: 1.5rem; 
-        overflow-x: auto; padding-bottom: 0.5rem;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
-      }
-      .pill { 
-        background: var(--bg-card); border: 1px solid var(--border-color); 
-        padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.8rem; 
-        font-weight: 600; color: var(--text-muted); text-decoration: none;
-        flex-shrink: 0;
-      }
-      .pill.active, .pill:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-
+      /* Main Content Layout */
+      .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; width: 100%; }
+      
       /* Featured Card */
       .featured-card {
-        background: var(--bg-card); border: 1px solid var(--border-color);
-        border-radius: 12px; padding: 1.25rem; margin-bottom: 2rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        background: #f8fafc; border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 2rem; margin-bottom: 2.5rem;
       }
       .featured-badge { 
-        background: #dbeafe; color: var(--primary); font-size: 0.7rem; 
-        font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase;
+        background: #dbeafe; color: var(--primary); font-size: 0.75rem; 
+        font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase;
       }
-      .featured-title { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); text-decoration: none; margin: 0.6rem 0; display: block; line-height: 1.3; }
+      .featured-title { font-size: 1.75rem; font-weight: 800; color: var(--text-dark); text-decoration: none; margin: 0.8rem 0; display: block; line-height: 1.3; }
+      .featured-title:hover { color: var(--primary); }
 
       /* Standard Posts Grid */
-      .posts-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+      .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem; }
       
       .post-card {
-        background: var(--bg-card); border: 1px solid var(--border-color);
-        border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column;
-        justify-content: space-between;
+        background: #ffffff; border: 1px solid var(--border-color);
+        border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column;
+        justify-content: space-between; transition: border-color 0.2s, box-shadow 0.2s;
       }
-      .post-title { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); text-decoration: none; margin: 0.5rem 0; display: block; }
-      .post-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.8rem; }
-      .post-meta { font-size: 0.75rem; color: #94a3b8; font-weight: 500; }
+      .post-card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+      .post-title { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); text-decoration: none; margin: 0.6rem 0; display: block; }
+      .post-title:hover { color: var(--primary); }
+      .post-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+      .post-meta { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
 
-      /* Sidebar & Widgets */
-      .widget {
-        background: var(--bg-card); border: 1px solid var(--border-color);
-        border-radius: 10px; padding: 1.25rem; margin-bottom: 1.5rem;
-      }
-      .widget-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.3rem; }
-      .tool-list { list-style: none; }
-      .tool-list li { margin-bottom: 0.6rem; }
-      .tool-list a { color: var(--text-dark); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-      
-      .newsletter-box { background: #eff6ff; border: 1px solid #bfdbfe; text-align: center; }
-      .newsletter-box input { width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 6px; margin: 0.8rem 0; }
-
-      /* Desktop Responsive Breakpoints */
-      @media (min-width: 768px) {
-        .hero-banner h1 { font-size: 2.5rem; }
-        .hero-banner p { font-size: 1.1rem; }
-        .posts-grid { grid-template-columns: repeat(2, 1fr); }
-        .featured-title { font-size: 1.7rem; }
-        .featured-card { padding: 2rem; }
+      @media (max-width: 768px) {
+        .hero-banner h1 { font-size: 1.8rem; }
+        .hero-banner p { font-size: 0.95rem; }
+        .featured-title { font-size: 1.3rem; }
+        .featured-card { padding: 1.25rem; }
+        .posts-grid { grid-template-columns: 1fr; }
       }
 
-      @media (min-width: 1024px) {
-        .content-grid { grid-template-columns: 2.5fr 1fr; }
-        .nav-links a { font-size: 0.95rem; }
-        .logo { font-size: 1.6rem; }
-      }
-
-      /* Responsive Footer */
-      footer { background: #0f172a; color: #94a3b8; padding: 2.5rem 1rem 1.5rem; margin-top: 3rem; width: 100%; }
-      .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-      @media (min-width: 640px) { .footer-container { grid-template-columns: repeat(3, 1fr); } }
-      .footer-col h4 { color: #fff; margin-bottom: 0.8rem; font-size: 0.95rem; }
-      .footer-col a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 0.4rem; font-size: 0.85rem; }
-      .footer-bottom { text-align: center; border-top: 1px solid #1e293b; padding-top: 1.2rem; margin-top: 1.5rem; font-size: 0.8rem; }
+      /* Simple Clean Footer */
+      footer { background: #0f172a; color: #94a3b8; padding: 3rem 1.5rem 1.5rem; margin-top: 4rem; width: 100%; }
+      .footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+      .footer-links a { color: #94a3b8; text-decoration: none; margin-left: 1.5rem; font-size: 0.9rem; }
+      .footer-links a:hover { color: #fff; }
+      .footer-bottom { text-align: center; border-top: 1px solid #1e293b; padding-top: 1.5rem; margin-top: 2rem; font-size: 0.85rem; }
     </style>
   </head>
   <body>
 
-    <!-- Responsive Header -->
+    <!-- Simple Top Nav -->
     <header>
       <div class="nav-container">
         <a href="/" class="logo">ScoreView<span>.online</span></a>
         <nav class="nav-links">
           <a href="/">Home</a>
-          <a href="/category/credit-check">Credit</a>
-          <a href="/category/background-check">Background</a>
-          <a href="#" class="btn-primary">Lookup</a>
+          <a href="/blog">Articles</a>
         </nav>
       </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Banner -->
     <section class="hero-banner">
       <h1>Smart Financial & Background Verification</h1>
       <p>Access credit scoring insights, public records databases, and consumer finance guides.</p>
     </section>
 
+    <!-- Main Content -->
     <div class="container">
-
-      <!-- Horizontal Scrollable Category Pills for Mobile -->
-      <div class="category-pills">
-        <a href="/" class="pill active">All Articles</a>
-        <a href="#" class="pill">Credit Score Guides</a>
-        <a href="#" class="pill">Background Checks</a>
-        <a href="#" class="pill">Public Records</a>
-        <a href="#" class="pill">Personal Finance</a>
-      </div>
-
-      <div class="content-grid">
-
-        <!-- Main Column -->
-        <main>
-          {featuredPost && (
-            <div class="featured-card">
-              <span class="featured-badge">Featured Article</span>
-              <a href={`/blog/${featuredPost.slug}`} class="featured-title">{featuredPost.data.title}</a>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem;">{featuredPost.data.description}</p>
-              <div class="post-meta">
-                {featuredPost.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • By {featuredPost.data.author}
-              </div>
+      <main>
+        {featuredPost && (
+          <div class="featured-card">
+            <span class="featured-badge">Latest Post</span>
+            <a href={`/blog/${featuredPost.slug}`} class="featured-title">{featuredPost.data.title}</a>
+            <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1rem;">{featuredPost.description || featuredPost.data.description}</p>
+            <div class="post-meta">
+              Published on {featuredPost.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </div>
-          )}
-
-          <h2 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem;">Recent Articles</h2>
-
-          <div class="posts-grid">
-            {recentPosts.map((post) => (
-              <article class="post-card">
-                <div>
-                  <span class="featured-badge" style="background:#f1f5f9; color:#475569;">{post.data.category}</span>
-                  <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
-                  <p class="post-desc">{post.data.description}</p>
-                </div>
-                <div class="post-meta">
-                  {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </div>
-              </article>
-            ))}
           </div>
-        </main>
+        )}
 
-        <!-- Sidebar -->
-        <aside>
-          <div class="widget">
-            <h3 class="widget-title">Quick Verification Tools</h3>
-            <ul class="tool-list">
-              <li><a href="#">🔍 Free Credit Score Check</a></li>
-              <li><a href="#">📋 Criminal History Lookup</a></li>
-              <li><a href="#">👤 Identity Verification Portal</a></li>
-              <li><a href="#">🏠 Public Records Database</a></li>
-            </ul>
-          </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: #0f172a;">Recent Articles</h2>
 
-          <div class="widget newsletter-box">
-            <h3 style="font-size: 1rem; color: #1e3a8a;">Stay Updated</h3>
-            <p style="font-size: 0.8rem; color: #3b82f6; margin-top: 0.2rem;">Get credit & policy updates in your inbox.</p>
-            <input type="email" placeholder="Enter your email" />
-            <a href="#" class="btn-primary" style="display:block; width:100%;">Subscribe</a>
-          </div>
-        </aside>
-
-      </div>
+        <div class="posts-grid">
+          {recentPosts.map((post) => (
+            <article class="post-card">
+              <div>
+                <span class="featured-badge" style="background:#f1f5f9; color:#475569;">{post.data.category || 'Guide'}</span>
+                <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
+                <p class="post-desc">{post.data.description}</p>
+              </div>
+              <div class="post-meta">
+                {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </div>
+            </article>
+          ))}
+        </div>
+      </main>
     </div>
 
-    <!-- Footer -->
+    <!-- Clean Footer -->
     <footer>
       <div class="footer-container">
-        <div class="footer-col">
+        <div>
           <a href="/" class="logo" style="color:#fff;">ScoreView<span style="color:#38bdf8;">.online</span></a>
-          <p style="font-size: 0.8rem; margin-top: 0.6rem;">Independent hub for financial education and public background verification resources.</p>
         </div>
-        <div class="footer-col">
-          <h4>Categories</h4>
-          <a href="#">Credit Checks</a>
-          <a href="#">Background Checks</a>
-          <a href="#">Public Records</a>
-        </div>
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Contact Us</a>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/blog">All Articles</a>
         </div>
       </div>
       <div class="footer-bottom">
