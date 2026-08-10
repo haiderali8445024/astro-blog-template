@@ -1,53 +1,250 @@
----
-import { getCollection } from 'astro:content'
-import BaseLayout from '../../layouts/BaseLayout.astro';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScoreView.online - Credit Score & Background Check</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-const title = 'Blog';
-const description = 'Latest articles.';
-const permalink = `${Astro.site.href}blog`;
+    body {
+      background-color: #0f172a;
+      color: #ffffff;
+      min-height: 100vh;
+    }
 
-let allPosts = await getCollection('posts')
-allPosts = allPosts.sort((a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf());
----
+    /* Sticky Responsive Navigation */
+    .site-header {
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-<BaseLayout title={title} description={description} permalink={permalink} current="blog">
-  <div class="container">
-    <h1>Blog</h1>
-    {allPosts.map((post, index) => {
-      const href = `/blog/${post.data.slug}`;
-      return (
-        <div>
-          { index !== 0 && <hr /> }
-          <div class="post-item">
-            <h2>
-              <a href={href}>{post.data.title}</a>
-            </h2>
-            <p>{post.data.description}</p>
-            <div class="post-item-footer">
-              <span class="post-item-date">— {post.data.publishDate}</span>
-            </div>
-          </div>
-        </div>
-      )
-    })}
-  </div>
-</BaseLayout>
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
 
-<style>
-  h2,
-  .post-item-footer {
-    font-family: var(--font-family-sans);
-    font-weight: 700;
-  }
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      text-decoration: none;
+    }
 
-  .post-item-date {
-    color: var(--text-secondary);
-    text-align: left;
-    text-transform: uppercase;
-    margin-right: 16px;
-  }
+    .logo span {
+      color: #2563eb;
+    }
 
-  hr {
-    margin: 60px auto;
-  }
-</style>
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .nav-menu a:hover {
+      color: #1d4ed8;
+    }
+
+    /* Mobile Hamburger Icon */
+    .mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .mobile-toggle span {
+      width: 25px;
+      height: 3px;
+      background-color: #0f172a;
+      border-radius: 2px;
+    }
+
+    /* Mobile Responsive Logic */
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: flex;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, padding 0.3s ease;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-menu.is-active {
+        max-height: 250px;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .nav-menu a {
+        width: 100%;
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+    }
+
+    /* Main Hero Section */
+    .hero-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #16a34a;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 8px 18px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 32px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-button {
+      display: inline-block;
+      width: 100%;
+      max-width: 450px;
+      background-color: #16a34a;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 18px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.4);
+    }
+
+    .cta-button:hover {
+      background-color: #15803d;
+    }
+
+    .trial-info {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 30px;
+      }
+      .hero-subtitle {
+        font-size: 15px;
+      }
+      .cta-button {
+        font-size: 17px;
+        padding: 16px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="#" class="logo">ScoreView<span>.online</span></a>
+      
+      <button class="mobile-toggle" id="menuToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#home">Home</a>
+        <a href="#credit-check">Credit Check</a>
+        <a href="#background-check">Background Check</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <main class="hero-container">
+    <div class="badge">🔥 Limited Time $1 Trial</div>
+    <h1 class="hero-title">Check Your Credit Score & 3-Bureau Report</h1>
+    <p class="hero-subtitle">
+      Get instant access to your credit scores, monitoring alerts, and credit-building tools for just $1.
+    </p>
+    
+    <a href="#trial" class="cta-button">Claim Your $1 Credit Score Trial &rarr;</a>
+
+    <div class="trial-info">
+      🔒 7-Day Trial for $1 • Renews at ~$29.99/mo • Cancel anytime online
+    </div>
+  </main>
+
+  <!-- Mobile Toggle Script -->
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('is-active');
+    });
+  </script>
+
+</body>
+</html>
