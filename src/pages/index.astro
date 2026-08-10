@@ -1,86 +1,156 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../layouts/BaseLayout.astro';
 
+const categories = ["Saving", "Investing", "Budgeting", "Crypto", "Credit Cards", "Debt", "Income", "Retirement"]
 const posts = [
-  { title: "How I Saved $10,000 on a $1500 Salary", category: "Saving", date: "Aug 8, 2026", excerpt: "Simple 50/30/20 rule jisko main 2 saal se follow kar raha hu...", icon: "💰" },
-  { title: "Investing for Beginners: Stocks vs Mutual Funds", category: "Investing", date: "Aug 5, 2026", excerpt: "Agar aap 18-25 ke beech ho to investing kaise start karni chahiye...", icon: "📈" },
-  { title: "Crypto is Not a Get Rich Quick Scheme", category: "Crypto", date: "Aug 1, 2026", excerpt: "Maine crypto me jo 3 galtiyan ki, aap mat karna...", icon: "₿" },
-  { title: "The Ultimate Monthly Budget Template", category: "Budgeting", date: "Jul 28, 2026", excerpt: "Free Notion + Excel template ke saath apna kharcha control karo.", icon: "📊" },
-  { title: "5 Side Hustles for Students in 2026", category: "Income", date: "Jul 22, 2026", excerpt: "College ke saath paise kamane ke 5 real tareeke, no scam.", icon: "💻" },
-  { title: "How to Get Out of Debt Fast", category: "Debt", date: "Jul 18, 2026", excerpt: "Debt snowball method se maine 6 mahine me loan khatam kiya.", icon: "🔥" },
+  { title: "How I Saved $10,000 on a $1500 Salary - My 2 Year Journey", category: "Saving", date: "Aug 8, 2026", read: "7 min", excerpt: "Maine kaise 50/30/20 rule follow karke apni salary se $10k save kiye. Full breakdown ke saath.", icon: "💰", featured: true },
+  { title: "Investing for Beginners 2026: Stocks vs Mutual Funds vs ETFs", category: "Investing", date: "Aug 5, 2026", read: "9 min", excerpt: "Agar aap 18-25 ke beech ho to investing kaha se start kare? Complete beginner guide.", icon: "📈", featured: true },
+  { title: "Crypto is Not a Get Rich Quick Scheme - 3 Mistakes I Made", category: "Crypto", date: "Aug 1, 2026", read: "6 min", excerpt: "Maine $2000 crypto me lose kiye. Ye 3 galtiyan aap mat karna warna pachtaoge.", icon: "₿", featured: false },
+  { title: "The Ultimate Monthly Budget Template (Free Download)", category: "Budgeting", date: "Jul 28, 2026", read: "5 min", excerpt: "Free Notion + Excel template jo main khud use karta hu. Apna kharcha 100% control karo.", icon: "📊", featured: false },
+  { title: "5 Real Side Hustles for Students in USA 2026", category: "Income", date: "Jul 22, 2026", read: "8 min", excerpt: "College ke saath paise kamane ke 5 real tareeke jo maine try kiye hain. No scam, only real.", icon: "💻", featured: true },
+  { title: "How to Get Out of $15,000 Debt in 6 Months - Snowball Method", category: "Debt", date: "Jul 18, 2026", read: "10 min", excerpt: "Debt snowball method se maine apna student loan 6 mahine me khatam kiya. Step by step.", icon: "🔥", featured: false },
+  { title: "Best Credit Cards for No Credit History in 2026", category: "Credit Cards", date: "Jul 15, 2026", read: "6 min", excerpt: "USA me credit history nahi hai to kaunsa credit card best hai? Top 5 cards compared.", icon: "💳", featured: false },
+  { title: "Roth IRA vs 401(k) - Which is Better at Age 20?", category: "Retirement", date: "Jul 10, 2026", read: "7 min", excerpt: "Retirement ke liye abhi se invest karna hai? Roth IRA aur 401k me difference samjho.", icon: "🏦", featured: false },
+  { title: "I Tried 10 Money Saving Apps for 30 Days - Here is The Best One", category: "Saving", date: "Jul 5, 2026", read: "8 min", excerpt: "10 popular budgeting apps test kiye. Sirf 2 hi kaam ke nikle. Mera honest review.", icon: "📱", featured: false },
 ]
 ---
 
-<Layout title="Finance Blog - Smart Money Guides">
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<Layout title="Finance Blog - Smart Money Guides for Beginners">
+<main class="bg-slate-950">
 
-    <!-- HERO -->
-    <section class="py-16 sm:py-24 grid lg:grid-cols-2 gap-10 items-center">
-      <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 mb-6">
-          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> New post every Monday
-        </div>
-        <h1 class="text-5xl sm:text-6xl font-bold leading-[1.05] tracking-tight mb-6 text-white">
-          Make smarter <br/> <span class="text-slate-500">money decisions.</span>
-        </h1>
-        <p class="text-slate-400 text-lg leading-relaxed max-w-xl mb-8">
-          No boring finance advice. Practical guides on saving, investing, and building wealth for beginners.
-        </p>
-        <div class="flex gap-4">
-          <a href="#posts" class="bg-sky-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-sky-600">Start Reading →</a>
-          <a href="#tools" class="bg-slate-900 border border-slate-800 px-6 py-3 rounded-xl font-semibold hover:border-slate-700 text-white">Explore Tools</a>
-        </div>
-      </div>
-      <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded- p-8">
-        <div class="text-sm text-slate-500 mb-4">Monthly Savings Growth</div>
-        <div class="text-4xl font-bold mb-6 text-white">$4,250 <span class="text-green-400 text-lg">+12.5%</span></div>
-        <div class="h-24 flex items-end gap-1">
-          <div class="w-full bg-slate-800 rounded h-[40%]"></div>
-          <div class="w-full bg-slate-800 rounded h-[60%]"></div>
-          <div class="w-full bg-slate-800 rounded h-[45%]"></div>
-          <div class="w-full bg-sky-500 rounded h-[85%]"></div>
-          <div class="w-full bg-sky-500 rounded h-[100%]"></div>
-        </div>
-      </div>
-    </section>
+  <!-- 1. TOP BAR -->
+  <div class="bg-sky-500 text-white text-center text-xs py-2 font-medium">🔥 New: Free Credit Score Checker Tool is Live - <a href="/credit-check" class="underline font-bold">Check Now</a></div>
 
-    <!-- BLOG POSTS -->
-    <section id="posts" class="py-12">
-      <h2 class="text-3xl font-bold mb-10 text-white">Latest Guides</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map(post => (
-          <div class="group rounded-2xl bg-slate-900/60 border border-slate-800 p-7 hover:border-slate-700 transition-all hover:-translate-y-1">
-            <div class="flex justify-between items-start mb-6">
-              <span class="text-3xl">{post.icon}</span>
-              <span class="text- px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 uppercase">{post.category}</span>
-            </div>
-            <h3 class="text-lg font-semibold leading-snug mb-3 text-white group-hover:text-sky-400">{post.title}</h3>
-            <p class="text-sm text-slate-400 line-clamp-2">{post.excerpt}</p>
-            <div class="mt-6 text-xs text-slate-500">{post.date} • 5 min read</div>
-          </div>
-        ))}
+  <!-- 2. NAVBAR -->
+  <nav class="max-w- mx-auto px-6 lg:px-8 py-5 flex justify-between items-center border-b border-slate-800/60 sticky top-0 bg-slate-950/80 backdrop-blur-xl z-50">
+    <div class="flex items-center gap-10">
+      <div class="text- font-black tracking-tighter text-white">FINANCE<span class="text-sky-400">.BLOG</span></div>
+      <div class="hidden lg:flex gap-7 text- font-medium text-slate-400">
+        <a href="/" class="text-white">Home</a>
+        <a href="/blog" class="hover:text-white">Blog</a>
+        <a href="#categories" class="hover:text-white">Categories</a>
+        <a href="/credit-check" class="hover:text-white">Credit Check</a>
+        <a href="/background-check" class="hover:text-white">Background Check</a>
       </div>
-    </section>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="#newsletter" class="hidden sm:block text-sm text-slate-400 hover:text-white px-4">Newsletter</a>
+      <a href="#newsletter" class="bg-white text-black px-5 py-2.5 rounded-full text-sm font-bold hover:bg-slate-200">Subscribe Free</a>
+    </div>
+  </nav>
 
-    <!-- TOOLS -->
-    <section id="tools" class="py-16">
-      <div class="rounded- bg-slate-900 border border-slate-800 p-8 sm:p-12">
-        <h2 class="text-3xl font-bold mb-3 text-white">Free Financial Tools</h2>
-        <p class="text-slate-400 mb-8">We built these tools to help you take action.</p>
-        <div class="grid lg:grid-cols-2 gap-6">
-          <div class="rounded-2xl bg-slate-950 border border-slate-800 p-8">
-            <h3 class="text-xl font-bold mb-2 text-white">Credit Score Checker</h3>
-            <p class="text-sm text-slate-400 mb-6">Get an estimated credit score in 30 seconds.</p>
-            <a href="/credit-check" class="block text-center w-full py-3 rounded-xl bg-white text-black font-semibold">Check Now</a>
-          </div>
-          <div class="rounded-2xl bg-slate-950 border border-slate-800 p-8">
-            <h3 class="text-xl font-bold mb-2 text-white">Background Check</h3>
-            <p class="text-sm text-slate-400 mb-6">Verify identity for rentals, jobs, and more.</p>
-            <a href="/background-check" class="block text-center w-full py-3 rounded-xl bg-slate-800 text-white font-semibold border border-slate-700">Run Check</a>
+  <!-- 3. HERO SECTION -->
+  <section class="max-w- mx-auto px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-300 mb-8">
+        <span class="px-2 py-0.5 rounded-full bg-green-500 text-black font-bold text-">NEW</span> 12,000+ readers trust us
+      </div>
+      <h1 class="text- sm:text- font-black leading-[0.9] tracking-[-0.04em] mb-6 text-white">
+        Make smarter<br/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-500 to-slate-700">money decisions.</span>
+      </h1>
+      <p class="text-slate-400 text- leading-relaxed max-w- mb-8">
+        No boring Wall Street jargon. I write practical guides on saving, investing, credit and building wealth for 18-30 year olds. Simple language, real experience.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-10">
+        <a href="#posts" class="bg-sky-500 text-white px-7 py-3.5 rounded-full font-bold hover:bg-sky-600 flex items-center gap-2">Start Reading <span>→</span></a>
+        <a href="#tools" class="bg-slate-900 border border-slate-800 px-7 py-3.5 rounded-full font-bold hover:border-slate-700 text-white">Explore Free Tools</a>
+      </div>
+      <div class="flex items-center gap-6 text-xs text-slate-500">
+        <div class="flex -space-x-2"><div class="w-7 h-7 rounded-full bg-slate-700 border-2 border-slate-950"></div><div class="w-7 h-7 rounded-full bg-slate-600 border-2 border-slate-950"></div><div class="w-7 h-7 rounded-full bg-slate-500 border-2 border-slate-950"></div></div>
+        <span>Trusted by 12k+ students & beginners</span>
+      </div>
+    </div>
+    <!-- RIGHT STATS CARD -->
+    <div class="relative">
+      <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-[2.5rem] p-8 shadow-2xl">
+        <div class="flex justify-between items-start mb-8"><div><div class="text-sm text-slate-500">Total Saved by Readers</div><div class="text-4xl font-black text-white mt-1">$2.4M+</div></div><div class="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold">+24% this month</div></div>
+        <div class="space-y-4">
+          <div class="flex justify-between text-xs text-slate-500"><span>Saving</span><span>Investing</span><span>Debt Free</span></div>
+          <div class="h- flex items-end gap-2">
+            <div class="flex-1 bg-slate-800 rounded-t-xl h-[30%]"></div><div class="flex-1 bg-slate-800 rounded-t-xl h-[50%]"></div><div class="flex-1 bg-slate-800 rounded-t-xl h-[40%]"></div><div class="flex-1 bg-slate-800 rounded-t-xl h-[70%]"></div><div class="flex-1 bg-sky-500 rounded-t-xl h-[90%]"></div><div class="flex-1 bg-sky-400 rounded-t-xl h-[100%]"></div>
           </div>
         </div>
+        <div class="mt-8 p-4 rounded-2xl bg-slate-950 border border-slate-800 flex gap-3"><div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white font-bold">H</div><div><div class="text-sm font-bold text-white">Haider Ali, Founder</div><div class="text-xs text-slate-500">"I started this blog to simplify finance"</div></div></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
+  <!-- 4. CATEGORIES -->
+  <section id="categories" class="max-w- mx-auto px-6 lg:px-8 pb-16">
+    <div class="flex flex-wrap gap-2.5">
+      {categories.map(cat => (
+        <a href="/blog" class="px-5 py-2.5 rounded-full bg-slate-900 border border-slate-800 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition">{cat}</a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 5. FEATURED POSTS (BIG) -->
+  <section class="max-w- mx-auto px-6 lg:px-8 pb-16">
+    <div class="grid lg:grid-cols-3 gap-6">
+      {posts.filter(p=>p.featured).slice(0,3).map(post => (
+        <a href="/blog" class="group rounded- bg-slate-900 border border-slate-800 p-8 hover:border-slate-700 transition-all hover:-translate-y-1 flex flex-col">
+          <div class="text-4xl mb-6">{post.icon}</div>
+          <span class="text- px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 w-fit mb-4 uppercase tracking-widest font-bold">{post.category}</span>
+          <h3 class="text- font-bold leading-tight mb-3 text-white group-hover:text-sky-400">{post.title}</h3>
+          <p class="text- text-slate-400 leading-relaxed mb-6 flex-1">{post.excerpt}</p>
+          <div class="text-xs text-slate-500">{post.date} • {post.read} read</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 6. ALL LATEST POSTS LIST -->
+  <section id="posts" class="max-w- mx-auto px-6 lg:px-8 py-16 border-t border-slate-800/60">
+    <div class="flex justify-between items-end mb-10">
+      <div><h2 class="text-4xl font-black text-white tracking-tight">Latest Guides</h2><p class="text-slate-500 mt-2">Practical, tested, no-fluff finance advice</p></div>
+      <a href="/blog" class="hidden md:block text-sm font-bold text-white border border-slate-800 px-5 py-2.5 rounded-full hover:bg-slate-900">View All 50+ Posts →</a>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      {posts.map(post => (
+        <a href="/blog" class="group flex gap-5 p-6 rounded-2xl border border-transparent hover:bg-slate-900 hover:border-slate-800 transition">
+          <div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-2xl flex-shrink-0">{post.icon}</div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-1"><span class="text- font-bold tracking-widest uppercase text-slate-500">{post.category}</span><span class="w-1 h-1 bg-slate-700 rounded-full"></span><span class="text- text-slate-600">{post.date}</span></div>
+            <h3 class="font-bold text-white leading-snug group-hover:text-sky-400">{post.title}</h3>
+            <p class="text- text-slate-500 mt-1.5 line-clamp-1">{post.excerpt}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 7. TOOLS SECTION BIG -->
+  <section id="tools" class="max-w- mx-auto px-6 lg:px-8 py-20">
+    <div class="rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 p-10 sm:p-14">
+      <div class="grid lg:grid-cols-[1fr_1.2fr] gap-12 items-center">
+        <div>
+          <div class="inline-flex px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text- font-bold tracking-widest mb-4">FREE TOOLS</div>
+          <h2 class="text- font-black leading-[0.95] tracking-tight text-white mb-4">Check your finance health, instantly.</h2>
+          <p class="text-slate-400 mb-8 leading-relaxed">These tools are free, secure, and built for educational purposes. No credit card needed. We don't store your data.</p>
+          <ul class="space-y-3 text-sm text-slate-300">
+            <li class="flex gap-2">✓ <span>No impact on credit score</span></li>
+            <li class="flex gap-2">✓ <span>100% secure & private</span></li>
+            <li class="flex gap-2">✓ <span>Results in 30 seconds</span></li>
+          </ul>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="rounded-[1.5rem] bg-slate-950 border border-slate-800 p-7"><div class="w-12 h-12 rounded-2xl bg-sky-500 text-white flex items-center justify-center font-bold text-xl mb-5">C</div><h3 class="font-bold text-white mb-2">Credit Check</h3><p class="text-xs text-slate-500 mb-6 leading-relaxed">Check your estimated credit score & get tips to improve it.</p><a href="/credit-check" class="block text-center w-full py-3 rounded-full bg-white text-black font-bold text-sm hover:bg-slate-200">Launch Tool</a></div>
+          <div class="rounded-[1.5rem] bg-slate-950 border border-slate-800 p-7"><div class="w-12 h-12 rounded-2xl bg-slate-800 border border-slate-700 text-white flex items-center justify-center font-bold text-xl mb-5">B</div><h3 class="font-bold text-white mb-2">Background Check</h3><p class="text-xs text-slate-500 mb-6 leading-relaxed">Public records based verification for jobs & rentals.</p><a href="/background-check" class="block text-center w-full py-3 rounded-full bg-slate-800 text-white font-bold text-sm border border-slate-700 hover:bg-slate-700">Launch Tool</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. NEWSLETTER BIG -->
+  <section id="newsletter" class="max-w- mx-auto px-6 lg:px-8 pb-24">
+    <div class="rounded-[2.5rem] bg-white text-black p-10 sm:p-16 text-center">
+      <h2 class="text-4xl sm:text-5xl font-black tracking-tight leading-[0.9] mb-4">Get smarter with money.<br/>One email per week.</h2>
+      <p class="text-black/60 max-w-xl mx-auto mb-8">Join 12,000+ beginners. I share 1 practical tip, 1 tool, and 1 mistake to avoid. No spam, unsubscribe anytime.</p>
+      <form class="max-w- mx-auto flex gap-2 p-1.5 rounded-full border border-black/10 bg-black/5"><input type="email" placeholder="Enter your email" class="flex-1 bg-transparent px-5 outline-none text-sm placeholder:text-black/40"/><button class="bg-black text-white px-7 py-3 rounded-full font-bold text-sm hover:bg-zinc-800">Subscribe</button></form>
+      <div class="text- text-black/40 mt-4">No spam. Unsubscribe anytime. Read by students at Harvard, Stanford.</div>
+    </div>
+  </section>
+
+</main>
 </Layout>
