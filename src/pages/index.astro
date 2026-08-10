@@ -2,7 +2,9 @@
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
-const recentPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredPost = sortedPosts[0];
+const recentPosts = sortedPosts.slice(1);
 ---
 
 <!doctype html>
@@ -12,57 +14,233 @@ const recentPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDa
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ScoreView.online | Credit & Background Verification Portal</title>
     <style>
-      body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
-      header { background: #020617; border-bottom: 1px solid #1e293b; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-      .logo { font-size: 1.5rem; font-weight: 800; color: #38bdf8; text-decoration: none; }
-      .nav a { color: #94a3b8; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
-      .nav a:hover { color: #34d399; }
-      .hero { text-align: center; padding: 4rem 1rem; max-width: 800px; margin: 0 auto; }
-      .hero h1 { font-size: 2.8rem; margin-bottom: 1rem; }
-      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-      .card { background: #1e293b; border: 1px solid #334155; padding: 1.5rem; border-radius: 12px; }
-      .btn { display: inline-block; background: #10b981; color: #020617; font-weight: bold; padding: 0.6rem 1.2rem; border-radius: 6px; text-decoration: none; margin-top: 1rem; }
-      .badge { background: rgba(16, 185, 129, 0.1); color: #34d399; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: bold; text-transform: uppercase; }
-      .post-title { font-size: 1.2rem; font-weight: bold; color: #fff; text-decoration: none; display: block; margin: 0.5rem 0; }
-      .post-title:hover { color: #34d399; }
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --bg-main: #f8fafc;
+        --bg-card: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { 
+        background-color: var(--bg-main); 
+        color: var(--text-dark); 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+        line-height: 1.6;
+      }
+
+      /* Navigation */
+      header { 
+        background: var(--bg-card); 
+        border-bottom: 1px solid var(--border-color); 
+        position: sticky; top: 0; z-index: 50;
+      }
+      .nav-container {
+        max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem;
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .logo { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); text-decoration: none; }
+      .logo span { color: var(--primary); }
+      .nav-links { display: flex; gap: 1.8rem; align-items: center; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+      .nav-links a:hover { color: var(--primary); }
+      .btn-primary { 
+        background: var(--primary); color: #fff; padding: 0.5rem 1.2rem; 
+        border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.9rem;
+      }
+      .btn-primary:hover { background: var(--primary-dark); }
+
+      /* Hero / Banner */
+      .hero-banner {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        color: #fff; padding: 3.5rem 1.5rem; text-align: center;
+      }
+      .hero-banner h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 0.8rem; }
+      .hero-banner p { color: #94a3b8; font-size: 1.15rem; max-width: 650px; margin: 0 auto 1.5rem; }
+
+      /* Layout */
+      .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+      .content-grid { display: grid; grid-template-columns: 2.5fr 1fr; gap: 2.5rem; }
+      @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr; } }
+
+      /* Categories Bar */
+      .category-pills { display: flex; gap: 0.8rem; margin-bottom: 2rem; flex-wrap: wrap; }
+      .pill { 
+        background: var(--bg-card); border: 1px solid var(--border-color); 
+        padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; 
+        font-weight: 600; color: var(--text-muted); text-decoration: none;
+      }
+      .pill.active, .pill:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+      /* Featured Post Card */
+      .featured-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 2rem; margin-bottom: 2.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      }
+      .featured-badge { 
+        background: #dbeafe; color: var(--primary); font-size: 0.75rem; 
+        font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase;
+      }
+      .featured-title { font-size: 1.8rem; font-weight: 800; color: var(--text-dark); text-decoration: none; margin: 0.8rem 0; display: block; }
+      .featured-title:hover { color: var(--primary); }
+
+      /* Standard Posts Grid */
+      .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+      .post-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column;
+        justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .post-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+      .post-title { font-size: 1.15rem; font-weight: 700; color: var(--text-dark); text-decoration: none; margin: 0.5rem 0; }
+      .post-title:hover { color: var(--primary); }
+      .post-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+      .post-meta { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+
+      /* Sidebar Widgets */
+      .widget {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 10px; padding: 1.5rem; margin-bottom: 1.8rem;
+      }
+      .widget-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; }
+      .tool-list { list-style: none; }
+      .tool-list li { margin-bottom: 0.8rem; }
+      .tool-list a { color: var(--text-dark); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+      .tool-list a:hover { color: var(--primary); }
+      
+      .newsletter-box { background: #eff6ff; border: 1px solid #bfdbfe; text-align: center; }
+      .newsletter-box input { width: 100%; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 6px; margin: 0.8rem 0; }
+
+      /* Footer */
+      footer { background: #0f172a; color: #94a3b8; padding: 3rem 1.5rem 1.5rem; margin-top: 4rem; }
+      .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+      .footer-col h4 { color: #fff; margin-bottom: 1rem; }
+      .footer-col a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 0.5rem; font-size: 0.9rem; }
+      .footer-bottom { text-align: center; border-top: 1px solid #1e293b; padding-top: 1.5rem; margin-top: 2rem; font-size: 0.85rem; }
     </style>
   </head>
   <body>
+
+    <!-- Header -->
     <header>
-      <a href="/" class="logo">ScoreView<span style="color:#34d399">.online</span></a>
-      <nav class="nav">
-        <a href="/credit-check">Credit Check</a>
-        <a href="/background-check">Background Check</a>
-        <a href="/finance">Finance</a>
-      </nav>
+      <div class="nav-container">
+        <a href="/" class="logo">ScoreView<span>.online</span></a>
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="/category/credit-check">Credit Check</a>
+          <a href="/category/background-check">Background Check</a>
+          <a href="/category/finance">Finance</a>
+          <a href="#" class="btn-primary">Free Lookup</a>
+        </nav>
+      </div>
     </header>
-    <main>
-      <section class="hero">
-        <h1>Smart Financial & Background Insights</h1>
-        <p style="color: #94a3b8;">Instant credit score guidance, public record lookup resources, and strategic finance articles.</p>
-      </section>
-      <div class="grid">
-        <div class="card">
-          <h2>💳 Credit Check Hub</h2>
-          <p style="color: #94a3b8;">Understand credit rating formulas, fix report errors, and track rating metrics.</p>
-          <a href="/credit-check" class="btn">Explore Credit Tools</a>
-        </div>
-        <div class="card">
-          <h2>🔍 Background Check Hub</h2>
-          <p style="color: #94a3b8;">Verify public records, criminal history lookups, and identity check procedures.</p>
-          <a href="/background-check" class="btn" style="background:#38bdf8;">Search Public Records</a>
-        </div>
+
+    <!-- Hero Section -->
+    <section class="hero-banner">
+      <h1>Smart Financial & Background Verification</h1>
+      <p>Access trusted credit scoring insights, public records databases, and consumer finance guides in one portal.</p>
+    </section>
+
+    <!-- Main Content Container -->
+    <div class="container">
+
+      <!-- Category Filter Pills -->
+      <div class="category-pills">
+        <a href="/" class="pill active">All Articles</a>
+        <a href="#" class="pill">Credit Score Guides</a>
+        <a href="#" class="pill">Background Checks</a>
+        <a href="#" class="pill">Public Records</a>
+        <a href="#" class="pill">Personal Finance</a>
       </div>
-      <h2 style="max-width:1100px; margin: 3rem auto 1rem; padding: 0 1rem;">Latest Articles</h2>
-      <div class="grid">
-        {recentPosts.map((post) => (
-          <div class="card">
-            <span class="badge">{post.data.category}</span>
-            <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
-            <p style="color: #94a3b8; font-size: 0.9rem;">{post.data.description}</p>
+
+      <div class="content-grid">
+
+        <!-- Left Main Column -->
+        <main>
+          {featuredPost && (
+            <div class="featured-card">
+              <span class="featured-badge">Featured Article</span>
+              <a href={`/blog/${featuredPost.slug}`} class="featured-title">{featuredPost.data.title}</a>
+              <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 1rem;">{featuredPost.data.description}</p>
+              <div class="post-meta">
+                Published on {featuredPost.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • By {featuredPost.data.author}
+              </div>
+            </div>
+          )}
+
+          <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1.2rem;">Recent Articles</h2>
+
+          <div class="posts-grid">
+            {recentPosts.map((post) => (
+              <article class="post-card">
+                <div>
+                  <span class="featured-badge" style="background:#f1f5f9; color:#475569;">{post.data.category}</span>
+                  <a href={`/blog/${post.slug}`} class="post-title">{post.data.title}</a>
+                  <p class="post-desc">{post.data.description}</p>
+                </div>
+                <div class="post-meta">
+                  {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </div>
+              </article>
+            ))}
           </div>
-        ))}
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside>
+          <!-- Quick Tools Widget -->
+          <div class="widget">
+            <h3 class="widget-title">Quick Verification Tools</h3>
+            <ul class="tool-list">
+              <li><a href="#">🔍 Free Credit Score Check</a></li>
+              <li><a href="#">📋 Criminal History Lookup</a></li>
+              <li><a href="#">👤 Identity Verification Portal</a></li>
+              <li><a href="#">🏠 Public Records Database</a></li>
+            </ul>
+          </div>
+
+          <!-- Newsletter Widget -->
+          <div class="widget newsletter-box">
+            <h3 style="font-size: 1.1rem; color: #1e3a8a;">Stay Updated</h3>
+            <p style="font-size: 0.85rem; color: #3b82f6; margin-top: 0.3rem;">Get the latest credit & policy updates delivered to your inbox.</p>
+            <input type="email" placeholder="Enter your email" />
+            <a href="#" class="btn-primary" style="display:block; width:100%;">Subscribe</a>
+          </div>
+        </aside>
+
       </div>
-    </main>
+    </div>
+
+    <!-- Professional Footer -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-col">
+          <a href="/" class="logo" style="color:#fff;">ScoreView<span style="color:#38bdf8;">.online</span></a>
+          <p style="font-size: 0.85rem; margin-top: 0.8rem;">Independent hub for financial education, credit score guidance, and public background verification resources.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <a href="#">Credit Checks</a>
+          <a href="#">Background Checks</a>
+          <a href="#">Public Records</a>
+          <a href="#">Finance Guides</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal & Support</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+          <a href="#">About ScoreView</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; {new Date().getFullYear()} ScoreView.online. All Rights Reserved.
+      </div>
+    </footer>
+
   </body>
 </html>
