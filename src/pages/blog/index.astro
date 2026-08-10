@@ -1,250 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ScoreView.online - Credit Score & Background Check</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Portal & Background Check</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-      background-color: #0f172a;
-      color: #ffffff;
-      min-height: 100vh;
-    }
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+        }
 
-    /* Sticky Responsive Navigation */
-    .site-header {
-      width: 100%;
-      background: #ffffff;
-      border-bottom: 1px solid #e2e8f0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+        /* Top Bar Styling */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0f172a;
+            padding: 12px 5%;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
 
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-    }
+        .brand-logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #38bdf8;
+            text-decoration: none;
+        }
 
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-      color: #0f172a;
-      text-decoration: none;
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
 
-    .logo span {
-      color: #2563eb;
-    }
+        .btn {
+            padding: 9px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
 
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
+        .btn-credit {
+            background-color: #2563eb;
+            color: white;
+        }
 
-    .nav-menu a {
-      text-decoration: none;
-      color: #2563eb;
-      font-weight: 600;
-      font-size: 15px;
-      white-space: nowrap;
-    }
+        .btn-credit:hover {
+            background-color: #1d4ed8;
+        }
 
-    .nav-menu a:hover {
-      color: #1d4ed8;
-    }
+        .btn-background {
+            background-color: #059669;
+            color: white;
+        }
 
-    /* Mobile Hamburger Icon */
-    .mobile-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-    }
+        .btn-background:hover {
+            background-color: #047857;
+        }
 
-    .mobile-toggle span {
-      width: 25px;
-      height: 3px;
-      background-color: #0f172a;
-      border-radius: 2px;
-    }
+        /* Blog Section Layout */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
 
-    /* Mobile Responsive Logic */
-    @media (max-width: 768px) {
-      .mobile-toggle {
-        display: flex;
-      }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
 
-      .nav-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: #ffffff;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 20px;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out, padding 0.3s ease;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-      }
+        .blog-card {
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
 
-      .nav-menu.is-active {
-        max-height: 250px;
-        padding: 15px 20px;
-        border-bottom: 1px solid #e2e8f0;
-      }
+        .blog-card:hover {
+            transform: translateY(-4px);
+        }
 
-      .nav-menu a {
-        width: 100%;
-        padding: 12px 0;
-        border-bottom: 1px solid #f1f5f9;
-      }
-    }
+        .blog-content {
+            padding: 20px;
+        }
 
-    /* Main Hero Section */
-    .hero-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 60px 20px;
-      text-align: center;
-    }
+        .blog-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
 
-    .badge {
-      display: inline-block;
-      background-color: #16a34a;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 800;
-      padding: 8px 18px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 24px;
-    }
-
-    .hero-title {
-      font-size: 42px;
-      font-weight: 900;
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-
-    .hero-subtitle {
-      font-size: 18px;
-      color: #94a3b8;
-      line-height: 1.5;
-      margin-bottom: 32px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .cta-button {
-      display: inline-block;
-      width: 100%;
-      max-width: 450px;
-      background-color: #16a34a;
-      color: #ffffff;
-      font-size: 20px;
-      font-weight: 700;
-      padding: 18px 24px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: background-color 0.2s ease;
-      box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.4);
-    }
-
-    .cta-button:hover {
-      background-color: #15803d;
-    }
-
-    .trial-info {
-      margin-top: 16px;
-      font-size: 13px;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    @media (max-width: 480px) {
-      .hero-title {
-        font-size: 30px;
-      }
-      .hero-subtitle {
-        font-size: 15px;
-      }
-      .cta-button {
-        font-size: 17px;
-        padding: 16px 16px;
-      }
-    }
-  </style>
+        .blog-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
-  <header class="site-header">
-    <div class="nav-container">
-      <a href="#" class="logo">ScoreView<span>.online</span></a>
-      
-      <button class="mobile-toggle" id="menuToggle" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+    <!-- Top Navigation Bar with Action Buttons -->
+    <header class="top-navbar">
+        <a href="#" class="brand-logo">InfoBlog Hub</a>
+        
+        <div class="nav-buttons">
+            <button class="btn btn-credit" onclick="handleCreditCheck()">Credit Check</button>
+            <button class="btn btn-background" onclick="handleBackgroundCheck()">Background Check</button>
+        </div>
+    </header>
 
-      <nav class="nav-menu" id="navMenu">
-        <a href="#home">Home</a>
-        <a href="#credit-check">Credit Check</a>
-        <a href="#background-check">Background Check</a>
-      </nav>
-    </div>
-  </header>
+    <!-- Main Blog Feed Container -->
+    <main class="container">
+        <div class="blog-grid">
+            <article class="blog-card">
+                <div class="blog-content">
+                    <h2 class="blog-title">Understanding Financial Credit Scores</h2>
+                    <p class="blog-desc">Learn how credit monitoring works and why maintaining a healthy report is crucial for personal finance.</p>
+                </div>
+            </article>
 
-  <!-- Hero Banner -->
-  <main class="hero-container">
-    <div class="badge">🔥 Limited Time $1 Trial</div>
-    <h1 class="hero-title">Check Your Credit Score & 3-Bureau Report</h1>
-    <p class="hero-subtitle">
-      Get instant access to your credit scores, monitoring alerts, and credit-building tools for just $1.
-    </p>
-    
-    <a href="#trial" class="cta-button">Claim Your $1 Credit Score Trial &rarr;</a>
+            <article class="blog-card">
+                <div class="blog-content">
+                    <h2 class="blog-title">Why Background Verification Matters</h2>
+                    <p class="blog-desc">A complete guide to identity checks, public records, and keeping your profile secure.</p>
+                </div>
+            </article>
 
-    <div class="trial-info">
-      🔒 7-Day Trial for $1 • Renews at ~$29.99/mo • Cancel anytime online
-    </div>
-  </main>
+            <article class="blog-card">
+                <div class="blog-content">
+                    <h2 class="blog-title">Top Security Practices for 2026</h2>
+                    <p class="blog-desc">Protect your personal data and identity online with these simple and effective steps.</p>
+                </div>
+            </article>
+        </div>
+    </main>
 
-  <!-- Mobile Toggle Script -->
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
+    <script>
+        function handleCreditCheck() {
+            alert("Redirecting to Credit Check service...");
+            // Aapka redirect code ya modal popup trigger yahan aayega
+        }
 
-    menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('is-active');
-    });
-  </script>
-
+        function handleBackgroundCheck() {
+            alert("Redirecting to Background Check service...");
+            // Aapka redirect code ya modal popup trigger yahan aayega
+        }
+    </script>
 </body>
 </html>
