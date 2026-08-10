@@ -1,57 +1,39 @@
 ---
-// Ye tumhare blog posts hain - baad me tum inko change kar sakte ho
+import Layout from '../layouts/Layout.astro';
+
 const posts = [
-  { title: "How I Saved $10,000 on a $1500 Salary", category: "Saving", date: "Aug 8, 2026", excerpt: "Simple 50/30/20 rule jisko main 2 saal se follow kar raha hu...", image: "💰" },
-  { title: "Investing for Beginners: Stocks vs Mutual Funds", category: "Investing", date: "Aug 5, 2026", excerpt: "Agar aap 18-25 ke beech ho to investing kaise start karni chahiye...", image: "📈" },
-  { title: "Crypto is Not a Get Rich Quick Scheme", category: "Crypto", date: "Aug 1, 2026", excerpt: "Maine crypto me jo 3 galtiyan ki, aap mat karna...", image: "₿" },
-  { title: "The Ultimate Monthly Budget Template", category: "Budgeting", date: "Jul 28, 2026", excerpt: "Free Notion + Excel template ke saath apna kharcha control karo.", image: "📊" },
-  { title: "5 Side Hustles for Students in 2026", category: "Income", date: "Jul 22, 2026", excerpt: "College ke saath paise kamane ke 5 real tareeke, no scam.", image: "💻" },
-  { title: "How to Get Out of Debt Fast", category: "Debt", date: "Jul 18, 2026", excerpt: "Debt snowball method se maine 6 mahine me loan khatam kiya.", image: "🔥" },
+  { title: "How I Saved $10,000 on a $1500 Salary", category: "Saving", date: "Aug 8, 2026", excerpt: "Simple 50/30/20 rule jisko main 2 saal se follow kar raha hu...", icon: "💰" },
+  { title: "Investing for Beginners: Stocks vs Mutual Funds", category: "Investing", date: "Aug 5, 2026", excerpt: "Agar aap 18-25 ke beech ho to investing kaise start karni chahiye...", icon: "📈" },
+  { title: "Crypto is Not a Get Rich Quick Scheme", category: "Crypto", date: "Aug 1, 2026", excerpt: "Maine crypto me jo 3 galtiyan ki, aap mat karna...", icon: "₿" },
+  { title: "The Ultimate Monthly Budget Template", category: "Budgeting", date: "Jul 28, 2026", excerpt: "Free Notion + Excel template ke saath apna kharcha control karo.", icon: "📊" },
+  { title: "5 Side Hustles for Students in 2026", category: "Income", date: "Jul 22, 2026", excerpt: "College ke saath paise kamane ke 5 real tareeke, no scam.", icon: "💻" },
+  { title: "How to Get Out of Debt Fast", category: "Debt", date: "Jul 18, 2026", excerpt: "Debt snowball method se maine 6 mahine me loan khatam kiya.", icon: "🔥" },
 ]
 ---
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finance Blog - Smart Money Guides</title>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-sky-500/20 selection:text-sky-400">
+<Layout title="Finance Blog - Smart Money Guides">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-  <!-- NAVBAR -->
-  <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex justify-between items-center border-b border-slate-800/50">
-    <div class="text-xl font-bold tracking-tight">FINANCE<span class="text-sky-400">.BLOG</span></div>
-    <div class="hidden md:flex gap-8 text-sm text-slate-400">
-      <a href="/" class="text-white">Home</a>
-      <a href="/blog" class="hover:text-white">Blog</a>
-      <a href="/credit-check" class="hover:text-white">Credit Check</a>
-      <a href="/background-check" class="hover:text-white">Background Check</a>
-    </div>
-    <a href="#newsletter" class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-slate-200">Subscribe</a>
-  </nav>
-
-  <main class="max-w-7xl mx-auto px-6 lg:px-8">
-
-    <!-- HERO - BLOG FOCUS -->
-    <section class="py-20 sm:py-28 grid lg:grid-cols-2 gap-12 items-center">
+    <!-- HERO -->
+    <section class="py-16 sm:py-24 grid lg:grid-cols-2 gap-10 items-center">
       <div>
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 mb-6">
           <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> New post every Monday
         </div>
-        <h1 class="text-5xl sm:text-6xl font-bold leading-[1.05] tracking-tight mb-6">
+        <h1 class="text-5xl sm:text-6xl font-bold leading-[1.05] tracking-tight mb-6 text-white">
           Make smarter <br/> <span class="text-slate-500">money decisions.</span>
         </h1>
         <p class="text-slate-400 text-lg leading-relaxed max-w-xl mb-8">
-          No boring finance advice. Practical guides on saving, investing, and building wealth for beginners. Written in simple language.
+          No boring finance advice. Practical guides on saving, investing, and building wealth for beginners.
         </p>
         <div class="flex gap-4">
           <a href="#posts" class="bg-sky-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-sky-600">Start Reading →</a>
-          <a href="#tools" class="bg-slate-900 border border-slate-800 px-6 py-3 rounded-xl font-semibold hover:border-slate-700">Explore Tools</a>
+          <a href="#tools" class="bg-slate-900 border border-slate-800 px-6 py-3 rounded-xl font-semibold hover:border-slate-700 text-white">Explore Tools</a>
         </div>
       </div>
-      <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded- p-8 relative">
+      <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded- p-8">
         <div class="text-sm text-slate-500 mb-4">Monthly Savings Growth</div>
-        <div class="text-4xl font-bold mb-6">$4,250 <span class="text-green-400 text-lg">+12.5%</span></div>
+        <div class="text-4xl font-bold mb-6 text-white">$4,250 <span class="text-green-400 text-lg">+12.5%</span></div>
         <div class="h-24 flex items-end gap-1">
           <div class="w-full bg-slate-800 rounded h-[40%]"></div>
           <div class="w-full bg-slate-800 rounded h-[60%]"></div>
@@ -62,70 +44,43 @@ const posts = [
       </div>
     </section>
 
-    <!-- BLOG POSTS - MAIN FOCUS -->
+    <!-- BLOG POSTS -->
     <section id="posts" class="py-12">
-      <div class="flex justify-between items-end mb-10">
-        <h2 class="text-3xl font-bold">Latest Guides</h2>
-        <a href="/blog" class="text-sm text-slate-400 hover:text-white">View All Posts →</a>
-      </div>
+      <h2 class="text-3xl font-bold mb-10 text-white">Latest Guides</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map(post => (
-          <a href="/blog" class="group relative flex flex-col justify-between rounded-2xl bg-slate-900/60 border border-slate-800 p-7 hover:border-slate-700 transition-all hover:-translate-y-1">
-            <div>
-              <div class="flex justify-between items-start mb-6">
-                <span class="text-3xl">{post.image}</span>
-                <span class="text- px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 uppercase tracking-wider">{post.category}</span>
-              </div>
-              <h3 class="text-lg font-semibold leading-snug mb-3 group-hover:text-sky-400 transition-colors">{post.title}</h3>
-              <p class="text-sm text-slate-400 leading-relaxed line-clamp-2">{post.excerpt}</p>
+          <div class="group rounded-2xl bg-slate-900/60 border border-slate-800 p-7 hover:border-slate-700 transition-all hover:-translate-y-1">
+            <div class="flex justify-between items-start mb-6">
+              <span class="text-3xl">{post.icon}</span>
+              <span class="text- px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 uppercase">{post.category}</span>
             </div>
-            <div class="mt-8 text-xs text-slate-500">{post.date} • 5 min read</div>
-          </a>
+            <h3 class="text-lg font-semibold leading-snug mb-3 text-white group-hover:text-sky-400">{post.title}</h3>
+            <p class="text-sm text-slate-400 line-clamp-2">{post.excerpt}</p>
+            <div class="mt-6 text-xs text-slate-500">{post.date} • 5 min read</div>
+          </div>
         ))}
       </div>
     </section>
 
-    <!-- TOOLS SECTION - SECONDARY -->
-    <section id="tools" class="py-20">
+    <!-- TOOLS -->
+    <section id="tools" class="py-16">
       <div class="rounded- bg-slate-900 border border-slate-800 p-8 sm:p-12">
-        <div class="max-w-2xl mb-10">
-          <h2 class="text-3xl font-bold mb-3">Free Financial Tools</h2>
-          <p class="text-slate-400">We built these tools to help you take action, not just read. 100% free and secure.</p>
-        </div>
+        <h2 class="text-3xl font-bold mb-3 text-white">Free Financial Tools</h2>
+        <p class="text-slate-400 mb-8">We built these tools to help you take action.</p>
         <div class="grid lg:grid-cols-2 gap-6">
-          <!-- Credit Check Tool Card -->
           <div class="rounded-2xl bg-slate-950 border border-slate-800 p-8">
-            <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 mb-5">✓</div>
-            <h3 class="text-xl font-bold mb-2">Credit Score Checker</h3>
-            <p class="text-sm text-slate-400 mb-6">Get an estimated credit score in 30 seconds. Educational use only.</p>
-            <a href="/credit-check" class="block text-center w-full py-3 rounded-xl bg-white text-black font-semibold hover:bg-slate-200">Check Now</a>
+            <h3 class="text-xl font-bold mb-2 text-white">Credit Score Checker</h3>
+            <p class="text-sm text-slate-400 mb-6">Get an estimated credit score in 30 seconds.</p>
+            <a href="/credit-check" class="block text-center w-full py-3 rounded-xl bg-white text-black font-semibold">Check Now</a>
           </div>
-          <!-- Background Check Tool Card -->
           <div class="rounded-2xl bg-slate-950 border border-slate-800 p-8">
-            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-5">◎</div>
-            <h3 class="text-xl font-bold mb-2">Background Check</h3>
-            <p class="text-sm text-slate-400 mb-6">Verify identity for rentals, jobs, and more. Fast & confidential.</p>
-            <a href="/background-check" class="block text-center w-full py-3 rounded-xl bg-slate-800 text-white font-semibold border border-slate-700 hover:bg-slate-700">Run Check</a>
+            <h3 class="text-xl font-bold mb-2 text-white">Background Check</h3>
+            <p class="text-sm text-slate-400 mb-6">Verify identity for rentals, jobs, and more.</p>
+            <a href="/background-check" class="block text-center w-full py-3 rounded-xl bg-slate-800 text-white font-semibold border border-slate-700">Run Check</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- NEWSLETTER -->
-    <section id="newsletter" class="py-12 border-t border-slate-800/50 text-center">
-      <h2 class="text-2xl font-bold mb-3">Get one finance tip every week</h2>
-      <p class="text-slate-400 text-sm mb-6">Join 12,000+ readers. No spam.</p>
-      <form class="max-w-md mx-auto flex gap-2">
-        <input type="email" placeholder="your email" class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-sm outline-none focus:border-sky-500" />
-        <button class="px-6 py-3 rounded-xl bg-sky-500 text-white text-sm font-semibold">Join</button>
-      </form>
-    </section>
-
   </main>
-
-  <footer class="max-w-7xl mx-auto px-6 lg:px-8 py-10 border-t border-slate-800/50 text-center text-xs text-slate-600">
-    © 2026 Finance Blog. All tools are for educational purposes. Not a financial advisor.
-  </footer>
-
-</body>
-</html>
+</Layout>
